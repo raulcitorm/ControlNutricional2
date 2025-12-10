@@ -18,12 +18,11 @@ return new class extends Migration
             
             $table->decimal('calories', 8, 2)->default(0); 
             $table->decimal('total_fat', 8, 2)->default(0);
-            $table->decimal('saturated_fat', 8, 2)->default(0); 
-            $table->decimal('trans_fat', 8, 2)->default(0); 
+            $table->decimal('saturated_fat', 8, 2)->default(0);
+            $table->decimal('cholesterol', 8, 2)->default(0);
             $table->decimal('polyunsaturated_fat', 8, 2)->default(0); 
             $table->decimal('monounsaturated_fat', 8, 2)->default(0); 
             $table->decimal('carbohydrates', 8, 2)->default(0);
-            $table->decimal('sugars', 8, 2)->default(0);
             $table->decimal('fiber', 8, 2)->default(0); 
             $table->decimal('protein', 8, 2)->default(0);
             

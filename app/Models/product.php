@@ -11,20 +11,19 @@ class Product extends Model
 
     protected $fillable = [
         'name', 'category_id', 'user_id', 'is_global',
-        'calories', 'total_fat', 'saturated_fat', 'trans_fat',
+        'calories', 'total_fat', 'saturated_fat', 'cholesterol',
         'polyunsaturated_fat', 'monounsaturated_fat', 'carbohydrates',
-        'sugars', 'fiber', 'protein'
+        'fiber', 'protein'
     ];
 
     protected $casts = [
         'calories' => 'decimal:2',
         'total_fat' => 'decimal:2',
         'saturated_fat' => 'decimal:2',
-        'trans_fat' => 'decimal:2',
+        'cholesterol' => 'decimal:2',
         'polyunsaturated_fat' => 'decimal:2',
         'monounsaturated_fat' => 'decimal:2',
         'carbohydrates' => 'decimal:2',
-        'sugars' => 'decimal:2',
         'fiber' => 'decimal:2',
         'protein' => 'decimal:2',
     ];
