@@ -34,7 +34,7 @@ class Dish extends Model
             'calories' => 0,
             'total_fat' => 0,
             'saturated_fat' => 0,
-            'trans_fat' => 0,
+            
             'polyunsaturated_fat' => 0,
             'monounsaturated_fat' => 0,
             'carbohydrates' => 0,
@@ -47,7 +47,7 @@ class Dish extends Model
             $quantity = $product->pivot->quantity / 100; 
             
             $total['calories'] += $product->calories * $quantity;
-            $total['total_fat'] += $product->total_fat * $quantity;
+           
             $total['saturated_fat'] += $product->saturated_fat * $quantity;
             $total['trans_fat'] += $product->trans_fat * $quantity;
             $total['polyunsaturated_fat'] += $product->polyunsaturated_fat * $quantity;

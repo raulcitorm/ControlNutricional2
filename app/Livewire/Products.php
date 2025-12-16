@@ -2,30 +2,29 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Livewire\WithPagination;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 
 class Products extends Component
 {
-    public $products;
+    use WithPagination;
+
+    protected $paginationTheme = 'tailwind';
+
     public $categories;
 
     public $name, $category_id;
     public $calories, $total_fat, $saturated_fat, $cholesterol;
     public $polyunsaturated_fat, $monounsaturated_fat;
     public $carbohydrates, $fiber, $protein;
+
     public $editingId = null;
 
     public function mount()
     {
         $this->categories = Category::orderBy('name')->get();
-        $this->loadProducts();
-    }
-
-    public function loadProducts()
-    {
-        $this->products = Product::personal(Auth::id())->get();
     }
 
     public function save()
@@ -50,8 +49,8 @@ class Products extends Component
             ]
         );
 
-        $this->resetInput();
-        $this->loadProducts();
+        $this->resetForm();
+        $this->resetPage(); 
     }
 
     public function edit($id)
@@ -76,10 +75,10 @@ class Products extends Component
     public function delete($id)
     {
         Product::personal(Auth::id())->findOrFail($id)->delete();
-        $this->loadProducts();
+        $this->resetPage(); 
     }
 
-    public function resetInput()
+    public function resetForm()
     {
         $this->editingId = null;
         $this->name = null;
@@ -92,6 +91,10 @@ class Products extends Component
 
     public function render()
     {
-        return view('livewire.products');
+        return view('livewire.products', [
+            'products' => Product::personal(Auth::id())
+                ->orderBy('name')
+                ->paginate(5)
+        ]);
     }
 }
