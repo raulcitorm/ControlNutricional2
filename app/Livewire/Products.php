@@ -21,37 +21,69 @@ class Products extends Component
     public $carbohydrates, $fiber, $protein;
 
     public $editingId = null;
+    protected function rules()
+{
+    return [
+        'name' => 'required|string|min:3',
+        'category_id' => 'required|exists:categories,id',
+
+        'calories' => 'nullable|numeric|min:0',
+        'total_fat' => 'nullable|numeric|min:0',
+        'saturated_fat' => 'nullable|numeric|min:0',
+        'cholesterol' => 'nullable|numeric|min:0',
+        'polyunsaturated_fat' => 'nullable|numeric|min:0',
+        'monounsaturated_fat' => 'nullable|numeric|min:0',
+        'carbohydrates' => 'nullable|numeric|min:0',
+        'fiber' => 'nullable|numeric|min:0',
+        'protein' => 'nullable|numeric|min:0',
+    ];
+}
+
+protected $messages = [
+    'name.required' => 'El nombre del producto es obligatorio.',
+    'name.min' => 'El nombre debe tener al menos 3 caracteres.',
+
+    'category_id.required' => 'Debes seleccionar una categoría.',
+    'category_id.exists' => 'La categoría seleccionada no es válida.',
+
+    '*.numeric' => 'Este campo debe ser un número.',
+    '*.min' => 'Este valor no puede ser negativo.',
+];
+
 
     public function mount()
     {
         $this->categories = Category::orderBy('name')->get();
     }
 
-    public function save()
-    {
-        Product::updateOrCreate(
-            ['id' => $this->editingId],
-            [
-                'user_id' => Auth::id(),
-                'is_global' => false,
-                'name' => $this->name,
-                'category_id' => $this->category_id ,
+   public function save()
+{
+    $this->validate();
 
-                'calories' => $this->calories ?? 0,
-                'total_fat' => $this->total_fat ?? 0,
-                'saturated_fat' => $this->saturated_fat ?? 0,
-                'cholesterol' => $this->cholesterol ?? 0,
-                'polyunsaturated_fat' => $this->polyunsaturated_fat ?? 0,
-                'monounsaturated_fat' => $this->monounsaturated_fat ?? 0,
-                'carbohydrates' => $this->carbohydrates ?? 0,
-                'fiber' => $this->fiber ?? 0,
-                'protein' => $this->protein ?? 0,
-            ]
-        );
+    Product::updateOrCreate(
+        ['id' => $this->editingId],
+        [
+            'user_id' => Auth::id(),
+            'is_global' => false,
+            'name' => $this->name,
+            'category_id' => $this->category_id,
 
-        $this->resetForm();
-        $this->resetPage(); 
-    }
+            'calories' => $this->calories ?? 0,
+            'total_fat' => $this->total_fat ?? 0,
+            'saturated_fat' => $this->saturated_fat ?? 0,
+            'cholesterol' => $this->cholesterol ?? 0,
+            'polyunsaturated_fat' => $this->polyunsaturated_fat ?? 0,
+            'monounsaturated_fat' => $this->monounsaturated_fat ?? 0,
+            'carbohydrates' => $this->carbohydrates ?? 0,
+            'fiber' => $this->fiber ?? 0,
+            'protein' => $this->protein ?? 0,
+        ]
+    );
+
+    $this->resetForm();
+    $this->resetErrorBag(); 
+    $this->resetPage();
+}
 
     public function edit($id)
     {

@@ -1,6 +1,15 @@
 <div class="p-4">
 
     <h2 class="text-xl font-semibold mb-4">Mis Productos Personales</h2>
+    @if ($errors->any())
+        <div class="bg-red-100 border border-red-400 text-red-700 p-3 rounded mb-4">
+            <ul class="list-disc ml-5 text-sm">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <form wire:submit.prevent="save" class="grid grid-cols-2 gap-3 mb-6">
 

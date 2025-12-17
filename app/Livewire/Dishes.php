@@ -16,8 +16,26 @@ class Dishes extends Component
     public $name;
     public $editingDishId = null;
 
-  
-    public $products = []; 
+
+    public $products = [];
+    protected function rules()
+    {
+        return [
+            'name' => 'required|string|min:3',
+            'products' => 'required|array',
+            'products.*' => 'nullable|numeric|min:0.01',
+        ];
+    }
+
+    protected $messages = [
+        'name.required' => 'El nombre del plato es obligatorio.',
+        'name.min' => 'El nombre del plato debe tener al menos 3 caracteres.',
+
+        'products.required' => 'Debes añadir al menos un ingrediente.',
+        'products.*.numeric' => 'La cantidad debe ser un número.',
+        'products.*.min' => 'La cantidad debe ser mayor que 0.',
+    ];
+
 
     public function mount()
     {
@@ -33,27 +51,37 @@ class Dishes extends Component
 
     public function save()
     {
+        $this->validate();
+
+
+        $validProducts = collect($this->products)
+            ->filter(fn($qty) => $qty > 0);
+
+        if ($validProducts->isEmpty()) {
+            $this->addError('products', 'Debes añadir al menos un ingrediente con cantidad.');
+            return;
+        }
+
         $dish = Dish::updateOrCreate(
             ['id' => $this->editingDishId],
             [
                 'name' => $this->name,
-                'user_id' => Auth::id()
+                'user_id' => Auth::id(),
             ]
         );
 
-      
         $syncData = [];
-        foreach ($this->products as $productId => $quantity) {
-            if ($quantity > 0) {
-                $syncData[$productId] = ['quantity' => $quantity];
-            }
+        foreach ($validProducts as $productId => $quantity) {
+            $syncData[$productId] = ['quantity' => $quantity];
         }
 
         $dish->products()->sync($syncData);
 
         $this->resetForm();
+        $this->resetErrorBag();
         $this->loadDishes();
     }
+
 
     public function edit($id)
     {
@@ -88,7 +116,7 @@ class Dishes extends Component
         return view('livewire.dishes', [
             'availableProducts' => Product::where(function ($q) {
                 $q->where('is_global', true)
-                  ->orWhere('user_id', Auth::id());
+                    ->orWhere('user_id', Auth::id());
             })->orderBy('name')->get()
         ]);
     }

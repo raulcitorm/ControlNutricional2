@@ -3,11 +3,11 @@
     <h2 class="text-xl font-bold">Mis Platos</h2>
 
     <div class="bg-white p-4 border rounded">
+      
+
         <form wire:submit.prevent="save">
 
-            <input wire:model="name"
-                class="border p-2 w-full mb-4"
-                placeholder="Nombre del plato">
+            <input wire:model="name" class="border p-2 w-full mb-4" placeholder="Nombre del plato">
 
             <h3 class="font-semibold mb-2">Ingredientes</h3>
 
@@ -15,13 +15,8 @@
                 @foreach($availableProducts as $product)
                     <div class="flex items-center gap-2">
                         <span class="text-sm w-40">{{ $product->name }}</span>
-                        <input
-                            type="number"
-                            step="0.01"
-                            min="0"
-                            wire:model="products.{{ $product->id }}"
-                            class="border p-1 w-20"
-                            placeholder="g">
+                        <input type="number" step="0.01" min="0" wire:model="products.{{ $product->id }}"
+                            class="border p-1 w-20" placeholder="g">
                     </div>
                 @endforeach
             </div>
@@ -32,17 +27,26 @@
                 </button>
 
                 @if($editingDishId)
-                <button type="button" wire:click="resetForm"
-                    class="bg-gray-500 text-white px-4 py-2 rounded">
-                    Cancelar
-                </button>
+                    <button type="button" wire:click="resetForm" class="bg-gray-500 text-white px-4 py-2 rounded">
+                        Cancelar
+                    </button>
                 @endif
             </div>
 
         </form>
+        <br>
+          @if ($errors->any())
+            <div class="bg-red-100 border border-red-400 text-red-700 p-3 rounded mb-4">
+                <ul class="list-disc ml-5 text-sm">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
     </div>
 
- 
+
     <div class="bg-white p-4 border rounded">
         <h3 class="font-semibold mb-2">Platos creados</h3>
 
