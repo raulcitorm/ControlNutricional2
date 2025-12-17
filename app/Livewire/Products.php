@@ -35,17 +35,17 @@ class Products extends Component
                 'user_id' => Auth::id(),
                 'is_global' => false,
                 'name' => $this->name,
-                'category_id' => $this->category_id,
+                'category_id' => $this->category_id ,
 
-                'calories' => $this->calories,
-                'total_fat' => $this->total_fat,
-                'saturated_fat' => $this->saturated_fat,
-                'cholesterol' => $this->cholesterol,
-                'polyunsaturated_fat' => $this->polyunsaturated_fat,
-                'monounsaturated_fat' => $this->monounsaturated_fat,
-                'carbohydrates' => $this->carbohydrates,
-                'fiber' => $this->fiber,
-                'protein' => $this->protein,
+                'calories' => $this->calories ?? 0,
+                'total_fat' => $this->total_fat ?? 0,
+                'saturated_fat' => $this->saturated_fat ?? 0,
+                'cholesterol' => $this->cholesterol ?? 0,
+                'polyunsaturated_fat' => $this->polyunsaturated_fat ?? 0,
+                'monounsaturated_fat' => $this->monounsaturated_fat ?? 0,
+                'carbohydrates' => $this->carbohydrates ?? 0,
+                'fiber' => $this->fiber ?? 0,
+                'protein' => $this->protein ?? 0,
             ]
         );
 

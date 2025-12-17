@@ -59,7 +59,7 @@
                 <ul class="text-sm mt-2 list-disc ml-4">
                     @foreach($dish->products as $product)
                         <li>
-                            {{ $product->name }} – {{ $product->pivot->quantity }} g
+                            {{ $product->name }} - {{ $product->pivot->quantity }} g
                         </li>
                     @endforeach
                 </ul>
