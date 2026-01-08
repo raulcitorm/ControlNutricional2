@@ -34,7 +34,7 @@ class Dish extends Model
             'calories' => 0,
             'total_fat' => 0,
             'saturated_fat' => 0,
-            
+            'trans_fat' => 0,
             'polyunsaturated_fat' => 0,
             'monounsaturated_fat' => 0,
             'carbohydrates' => 0,

@@ -16,8 +16,6 @@ return new class extends Migration
             $table->foreignId('dish_id')->constrained()->onDelete('cascade');
             $table->decimal('servings', 3, 1)->default(1);
             $table->timestamps();
-            
-            $table->unique(['user_id', 'date', 'meal_type']);
         });
     }
 

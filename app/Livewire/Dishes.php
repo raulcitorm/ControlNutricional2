@@ -8,6 +8,7 @@ use Livewire\Component;
 use App\Models\Dish;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
 
 class Dishes extends Component
 {
@@ -40,6 +41,12 @@ class Dishes extends Component
     public function mount()
     {
         $this->loadDishes();
+    }
+
+    #[On('product-created')]
+    public function refreshProducts()
+    {
+        // Refresh cuando se crea un producto nuevo
     }
 
     public function loadDishes()
