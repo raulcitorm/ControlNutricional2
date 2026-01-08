@@ -97,7 +97,10 @@
         <tbody>
             @foreach($products as $product)
                 <tr class="hover:bg-gray-50">
-                    <td class="border p-2 font-medium text-gray-900">
+                    <td class="border p-2 font-medium text-gray-900 flex items-center gap-2">
+                        @if($product->is_favorite)
+                            <span class="text-yellow-500 text-lg">★</span>
+                        @endif
                         {{ $product->name }}
                     </td>
 
@@ -105,7 +108,15 @@
                         {{ $product->calories }}
                     </td>
 
-                    <td class="border p-2">
+                    <td class="border p-2 space-x-2">
+                        <button
+                            wire:click="toggleFavorite({{ $product->id }})"
+                            class="@if($product->is_favorite) text-yellow-500 @else text-gray-400 @endif hover:text-yellow-500 mr-3 text-lg"
+                            title="@if($product->is_favorite) Quitar de favoritos @else Añadir a favoritos @endif"
+                        >
+                            ★
+                        </button>
+
                         <button
                             wire:click="edit({{ $product->id }})"
                             class="text-blue-600 hover:text-blue-800 mr-3"

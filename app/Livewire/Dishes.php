@@ -118,13 +118,45 @@ class Dishes extends Component
         $this->products = [];
     }
 
+    public function toggleFavoriteDish($id)
+    {
+        $dish = Dish::findOrFail($id);
+        $userId = Auth::id();
+
+        if ($dish->isFavoritedBy($userId)) {
+            $dish->favoritedBy()->detach($userId);
+        } else {
+            $dish->favoritedBy()->attach($userId);
+        }
+    }
+
+    public function toggleFavoriteProduct($id)
+    {
+        $product = Product::findOrFail($id);
+        $userId = Auth::id();
+
+        if ($product->isFavoritedBy($userId)) {
+            $product->favoritedBy()->detach($userId);
+        } else {
+            $product->favoritedBy()->attach($userId);
+        }
+    }
+
     public function render()
     {
         return view('livewire.dishes', [
             'availableProducts' => Product::where(function ($q) {
-                $q->where('is_global', true)
-                    ->orWhere('user_id', Auth::id());
-            })->orderBy('name')->get()
+                $q->where('products.is_global', true)
+                    ->orWhere('products.user_id', Auth::id());
+            })
+                ->leftJoin('favorite_products', function ($join) {
+                    $join->on('products.id', '=', 'favorite_products.product_id')
+                        ->where('favorite_products.user_id', '=', Auth::id());
+                })
+                ->select('products.*', \Illuminate\Support\Facades\DB::raw('CASE WHEN favorite_products.id IS NOT NULL THEN 1 ELSE 0 END as is_favorite'))
+                ->orderByRaw('is_favorite DESC')
+                ->orderBy('products.name')
+                ->get()
         ]);
     }
 }

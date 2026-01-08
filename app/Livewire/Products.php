@@ -113,6 +113,18 @@ protected $messages = [
         $this->resetPage(); 
     }
 
+    public function toggleFavorite($id)
+    {
+        $product = Product::findOrFail($id);
+        $userId = Auth::id();
+
+        if ($product->isFavoritedBy($userId)) {
+            $product->favoritedBy()->detach($userId);
+        } else {
+            $product->favoritedBy()->attach($userId);
+        }
+    }
+
     public function resetForm()
     {
         $this->editingId = null;
@@ -127,8 +139,15 @@ protected $messages = [
     public function render()
     {
         return view('livewire.products', [
-            'products' => Product::personal(Auth::id())
-                ->orderBy('name')
+            'products' => Product::where('products.user_id', Auth::id())
+                ->where('products.is_global', false)
+                ->leftJoin('favorite_products', function ($join) {
+                    $join->on('products.id', '=', 'favorite_products.product_id')
+                        ->where('favorite_products.user_id', '=', Auth::id());
+                })
+                ->select('products.*', \Illuminate\Support\Facades\DB::raw('CASE WHEN favorite_products.id IS NOT NULL THEN 1 ELSE 0 END as is_favorite'))
+                ->orderByRaw('is_favorite DESC')
+                ->orderBy('products.name')
                 ->paginate(5)
         ]);
     }

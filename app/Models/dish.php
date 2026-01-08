@@ -28,6 +28,17 @@ class Dish extends Model
         return $this->hasMany(Menu::class);
     }
 
+    public function favoritedBy()
+    {
+        return $this->belongsToMany(User::class, 'favorite_dishes', 'dish_id', 'user_id')
+            ->withTimestamps();
+    }
+
+    public function isFavoritedBy($userId)
+    {
+        return $this->favoritedBy()->where('user_id', $userId)->exists();
+    }
+
     public function calculateMacros()
     {
         $total = [

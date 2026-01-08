@@ -55,4 +55,15 @@ class Product extends Model
         return $query->where('user_id', $userId)
             ->where('is_global', false);
     }
+
+    public function favoritedBy()
+    {
+        return $this->belongsToMany(User::class, 'favorite_products', 'product_id', 'user_id')
+            ->withTimestamps();
+    }
+
+    public function isFavoritedBy($userId)
+    {
+        return $this->favoritedBy()->where('user_id', $userId)->exists();
+    }
 }

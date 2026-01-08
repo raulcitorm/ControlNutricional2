@@ -1,4 +1,7 @@
 <div class="p-4 space-y-6 text-gray-800">
+    @php
+    use Illuminate\Support\Facades\Auth;
+    @endphp
 
     <h2 class="text-xl font-bold text-gray-900">Mis Platos</h2>
 
@@ -24,12 +27,24 @@
                         
                         <div class="p-4 bg-white border-t border-gray-200 grid grid-cols-2 gap-4">
                             @foreach($products as $product)
-                                <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg hover:bg-blue-50 transition">
-                                    <label class="text-sm font-medium text-gray-700 flex-1">
+                                <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg hover:bg-blue-50 transition @if($product->is_favorite) ring-2 ring-yellow-400 @endif">
+                                    <label class="text-sm font-medium text-gray-700 flex-1 flex items-center gap-2">
+                                        @if($product->is_favorite)
+                                            <span class="text-yellow-500 text-sm">★</span>
+                                        @endif
                                         {{ $product->name }}
                                     </label>
 
                                     <div class="flex items-center gap-2">
+                                        <button
+                                            type="button"
+                                            wire:click="toggleFavoriteProduct({{ $product->id }})"
+                                            class="@if($product->is_favorite) text-yellow-500 @else text-gray-300 @endif hover:text-yellow-500 text-sm"
+                                            title="@if($product->is_favorite) Quitar de favoritos @else Añadir a favoritos @endif"
+                                        >
+                                            ★
+                                        </button>
+
                                         <input
                                             type="number"
                                             step="0.01"
@@ -89,14 +104,25 @@
             <div class="border p-3 mb-3 rounded hover:bg-gray-50">
 
                 <div class="flex justify-between items-center">
-                    <strong class="text-gray-900 text-base">
+                    <strong class="text-gray-900 text-base flex items-center gap-2">
+                        @if($dish->isFavoritedBy(Auth::id()))
+                            <span class="text-yellow-500 text-lg">★</span>
+                        @endif
                         {{ $dish->name }}
                     </strong>
 
-                    <div>
+                    <div class="space-x-2">
+                        <button
+                            wire:click="toggleFavoriteDish({{ $dish->id }})"
+                            class="@if($dish->isFavoritedBy(Auth::id())) text-yellow-500 @else text-gray-400 @endif hover:text-yellow-500 text-lg"
+                            title="@if($dish->isFavoritedBy(Auth::id())) Quitar de favoritos @else Añadir a favoritos @endif"
+                        >
+                            ★
+                        </button>
+
                         <button
                             wire:click="edit({{ $dish->id }})"
-                            class="text-blue-600 hover:text-blue-800 mr-2"
+                            class="text-blue-600 hover:text-blue-800"
                         >
                             Editar
                         </button>

@@ -30,8 +30,14 @@ class Menus extends Component
 
     public function loadAvailableDishes()
     {
-        $this->availableDishes = Dish::where('user_id', $this->userId)
-            ->orderBy('name')
+        $this->availableDishes = Dish::where('dishes.user_id', '=', $this->userId)
+            ->leftJoin('favorite_dishes', function ($join) {
+                $join->on('dishes.id', '=', 'favorite_dishes.dish_id')
+                    ->where('favorite_dishes.user_id', '=', $this->userId);
+            })
+            ->select('dishes.*', \Illuminate\Support\Facades\DB::raw('CASE WHEN favorite_dishes.id IS NOT NULL THEN 1 ELSE 0 END as is_favorite'))
+            ->orderByRaw('is_favorite DESC')
+            ->orderBy('dishes.name')
             ->get()
             ->toArray();
     }
