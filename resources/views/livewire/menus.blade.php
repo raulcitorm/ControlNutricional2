@@ -4,7 +4,7 @@
 
     <div class="bg-white p-4 border rounded space-y-4">
         
-        <!-- Selector de fecha -->
+
         <div class="flex items-center gap-4">
             <label class="font-semibold text-gray-800">Fecha:</label>
             <input
@@ -15,12 +15,12 @@
             >
         </div>
 
-        <!-- Agregar platos -->
+
         <div class="border-t pt-4 space-y-3">
             <h3 class="font-semibold text-gray-800">Añadir Plato</h3>
             
             <div class="grid grid-cols-3 gap-3">
-                <!-- Tipo de comida -->
+
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de comida</label>
                     <select
@@ -49,7 +49,7 @@
                     </select>
                 </div>
 
-                <!-- Cantidad de porciones -->
+
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Porciones</label>
                     <input
@@ -78,14 +78,14 @@
 
     </div>
 
-    <!-- Menú del día -->
+
     <div class="bg-white p-4 border rounded space-y-4">
         <h3 class="font-semibold text-gray-900 text-lg">Menú de {{ \Carbon\Carbon::parse($selectedDate)->format('d/m/Y') }}</h3>
 
         @if($menus->isEmpty())
             <p class="text-gray-500 italic">Sin platos añadidos para este día</p>
         @else
-            <!-- Agrupar por tipo de comida -->
+
             @foreach($mealTypes as $mealValue => $mealLabel)
                 @php
                     $mealMenus = $menus->filter(fn($m) => $m->meal_type === $mealValue);
@@ -120,40 +120,40 @@
         @endif
     </div>
 
-    <!-- Resumen de macronutrientes diarios -->
+
     <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 border-2 border-blue-200 rounded-lg">
         <h3 class="font-bold text-gray-900 text-lg mb-4">Resumen de Nutrientes - {{ \Carbon\Carbon::parse($selectedDate)->format('d/m/Y') }}</h3>
         
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            <!-- Calorías -->
+
             <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-red-500">
                 <p class="text-xs text-gray-600 font-semibold uppercase">Calorías</p>
                 <p class="text-2xl font-bold text-red-600">{{ number_format($dailyMacros['calories'] ?? 0, 0) }}</p>
                 <p class="text-xs text-gray-500">kcal</p>
             </div>
 
-            <!-- Proteína -->
+
             <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-green-500">
                 <p class="text-xs text-gray-600 font-semibold uppercase">Proteína</p>
                 <p class="text-2xl font-bold text-green-600">{{ number_format($dailyMacros['protein'] ?? 0, 1) }}</p>
                 <p class="text-xs text-gray-500">g</p>
             </div>
 
-            <!-- Carbohidratos -->
+
             <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-yellow-500">
                 <p class="text-xs text-gray-600 font-semibold uppercase">Carbos</p>
                 <p class="text-2xl font-bold text-yellow-600">{{ number_format($dailyMacros['carbohydrates'] ?? 0, 1) }}</p>
                 <p class="text-xs text-gray-500">g</p>
             </div>
 
-            <!-- Grasas -->
+
             <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-orange-500">
                 <p class="text-xs text-gray-600 font-semibold uppercase">Grasas</p>
                 <p class="text-2xl font-bold text-orange-600">{{ number_format($dailyMacros['total_fat'] ?? 0, 1) }}</p>
                 <p class="text-xs text-gray-500">g</p>
             </div>
 
-            <!-- Fibra -->
+
             <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-purple-500">
                 <p class="text-xs text-gray-600 font-semibold uppercase">Fibra</p>
                 <p class="text-2xl font-bold text-purple-600">{{ number_format($dailyMacros['fiber'] ?? 0, 1) }}</p>
@@ -161,7 +161,7 @@
             </div>
         </div>
 
-        <!-- Detalles adicionales -->
+
         <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
             <div class="bg-white p-3 rounded">
                 <p class="text-gray-600 font-semibold">Grasa Saturada</p>
