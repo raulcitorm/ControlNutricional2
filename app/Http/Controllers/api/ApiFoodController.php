@@ -1,66 +1,69 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\product;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ApiFoodController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return response()->json(['status' => true,'message'=> 'lista','data'=> product::all()]);
+        return response()->json([
+            'status' => true,
+            'message' => 'Lista de productos',
+            'data' => Product::all()
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $product = Product::create($validated);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Producto creado',
+            'data' => $product
+        ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(product $product)
+    public function show(Product $product)
     {
-        //
+        return response()->json([
+            'status' => true,
+            'message' => 'Detalle del producto',
+            'data' => $product
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(product $product)
+    public function update(Request $request, Product $product)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'sometimes|string|max:255',
+           
+        ]);
+
+        $product->update($validated);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Producto actualizado',
+            'data' => $product
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, product $product)
+    public function destroy(Product $product)
     {
-        //
-    }
+        $product->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(product $product)
-    {
-        //
+        return response()->json([
+            'status' => true,
+            'message' => 'Producto eliminado'
+        ]);
     }
 }

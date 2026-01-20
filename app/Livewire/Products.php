@@ -83,8 +83,7 @@ protected $messages = [
     $this->resetForm();
     $this->resetErrorBag(); 
     $this->resetPage();
-    
-    // Disparar evento para que Dishes se refresque
+
     $this->dispatch('product-created');
 }
 
