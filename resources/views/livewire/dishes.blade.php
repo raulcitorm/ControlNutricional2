@@ -126,13 +126,14 @@
                         >
                             Editar
                         </button>
-
+                      @role('admin')
                         <button
                             wire:click="delete({{ $dish->id }})"
                             class="text-red-600 hover:text-red-800"
                         >
                             Eliminar
                         </button>
+                        @endrole
                     </div>
                 </div>
 

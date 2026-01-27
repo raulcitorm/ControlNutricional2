@@ -123,13 +123,14 @@
                         >
                             Editar
                         </button>
-
+                        @role('admin')
                         <button
                             wire:click="delete({{ $product->id }})"
                             class="text-red-600 hover:text-red-800"
                         >
                             Eliminar
                         </button>
+                        @endrole
                     </td>
                 </tr>
             @endforeach

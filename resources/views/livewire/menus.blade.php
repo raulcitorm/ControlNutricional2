@@ -105,12 +105,15 @@
                                         <p class="font-medium text-gray-800">{{ $menu->dish->name }}</p>
                                         <p class="text-xs text-gray-500">{{ $menu->servings }} porción(es)</p>
                                     </div>
+                                    @role('admin')
                                     <button
                                         wire:click="removeDish({{ $menu->id }})"
                                         class="text-red-600 hover:text-red-800 text-sm font-medium"
                                     >
                                         Eliminar
                                     </button>
+                                    @endrole
+                               
                                 </div>
                             @endforeach
                         </div>
